@@ -28,9 +28,9 @@ public class ShortestPathSolverTest {
         filePath = "./resources/instance2.txt";
         solver = new ShortestPathSolver(filePath);
 
-        source = 190;
-        destination = 255;
-        capacity = 242;
+        source = 1;
+        destination = 6;
+        capacity = 10;
         assertEquals("Source node id is incorrect", source, solver.getSourceNodeId());
         assertEquals("Destination node id is incorrect", destination, solver.getDestinationNodeId());
         assertEquals("Capacity is incorrect", capacity, solver.getCapacity());
@@ -43,6 +43,13 @@ public class ShortestPathSolverTest {
         solver.solve();
         String solution = solver.getSolution();
         String expectedSolution = "3\n0 2 1";
+        assertEquals("Wrong solution", expectedSolution, solution);
+
+        filePath = "./resources/instance2.txt";
+        solver = new ShortestPathSolver(filePath);
+        solver.solve();
+        solution = solver.getSolution();
+        expectedSolution = "15\n1 3 2 5 6";
         assertEquals("Wrong solution", expectedSolution, solution);
     }
 

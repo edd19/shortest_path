@@ -82,7 +82,7 @@ public class ShortestPathSolver {
                 lamdba--;
             else
                 lamdba++;
-            mu = 1 / (k+1);
+            mu = 1 / (1.0*(k+1));
             k++;
         }
 
