@@ -30,7 +30,7 @@ public class DijkstraTest {
         Dijkstra dijkstra = new Dijkstra(sourceNodeId, destinationNodeId, edges);
         Node destination = dijkstra.compute();
 
-        assertEquals("Wrong weight from source to destination", 4, destination.getDistanceToSource());
+        assertEquals("Wrong weight from source to destination", 4, destination.getProperDistance());
 
         sourceNodeId = 1;
         destinationNodeId = 10;
@@ -38,7 +38,7 @@ public class DijkstraTest {
         dijkstra = new Dijkstra(sourceNodeId, destinationNodeId, edges);
         destination = dijkstra.compute(0);
 
-        assertEquals("Wrong weight from source to destination", 487, destination.getDistanceToSource());
+        assertEquals("Wrong weight from source to destination", 487, destination.getProperDistance());
     }
 
 

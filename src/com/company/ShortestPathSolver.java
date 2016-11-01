@@ -63,30 +63,35 @@ public class ShortestPathSolver {
 
     public void solve(){
         Dijkstra dijkstra = new Dijkstra(sourceNodeId, destinationNodeId, edges);
-        int lamdba = 0;
-        double mu = 1;
-        int l = Integer.MIN_VALUE;
+        double lamdba = 40;
+        double[] lastLamdba = {-1, -2};
+        double l = Integer.MIN_VALUE;
         int k = 0;
-        double epsilon = 0.001;
-        while(mu > epsilon){
+        double step = 1;
+        int limit = 150;
+        while(k < limit){
             Node sol =  dijkstra.compute(lamdba);
-            int l_k = sol.getDistanceToSource() + lamdba * (sol.getCapacityUsed() - this.capacity);
+            double l_k = sol.getDistanceToSource() +  (int)(lamdba * (sol.getCapacityUsed() - this.capacity));
             if (l_k >= l){
                 l = l_k;
                 if (isFeasible(sol)){
                     if (this.solution == null || this.solution.getProperDistance() > sol.getProperDistance())
                         this.solution = sol;
-                    lamdba--;
                 }
-            }
-            if (isFeasible(sol))
-                lamdba--;
-            else
-                lamdba++;
-            mu = 1 / (1.0*(k+1));
-            k++;
-        }
 
+            }
+            if( isFeasible(sol))
+                lamdba -= step;
+            else
+                lamdba += step;
+            k++;
+            if (k % 4 == 1)
+                lastLamdba[1] = lamdba;
+            else if (k % 4 == 3)
+                lastLamdba[0] = lamdba;
+            if (lastLamdba[0] == lastLamdba[1])
+                step = step / 10.0;
+        }
     }
 
     public boolean isFeasible(Node sol){

@@ -1,6 +1,7 @@
 package com.company;
 
 import java.util.ArrayList;
+import java.util.DoubleSummaryStatistics;
 import java.util.HashMap;
 
 /**
@@ -35,7 +36,7 @@ public class Dijkstra {
         return solver.destination;
     }
 
-    public Node compute(int lamdba) {
+    public Node compute(double lamdba) {
         Solver solver = new Solver(sourceNodeId, destinationNodeId, edges, lamdba);
         solver.compute();
         return solver.destination;
@@ -48,9 +49,9 @@ public class Dijkstra {
         private int destinationNodeId;
         private Node destination;
         private Node source;
-        private int lambda;
+        private double lambda;
 
-        public Solver(int sourceNodeId, int destinationNodeId, Edge[] edges, int lamdba) {
+        public Solver(int sourceNodeId, int destinationNodeId, Edge[] edges, double lamdba) {
             this.edges = edges;
             this.sourceNodeId = sourceNodeId;
             this.destinationNodeId = destinationNodeId;
@@ -88,14 +89,14 @@ public class Dijkstra {
         }
 
         public Node findClosestNode(){
-            int minWeight = Integer.MAX_VALUE;
+            double minWeight = Double.POSITIVE_INFINITY;
             int[] nodeVisited = new int[]{-1,-1};
             Edge edgeTaken = null;
 
             for(Edge edge : edges){
                 int[] nodeId = direction(edge);
                 if (nodeId[0] != -1){
-                    int weight = getWeight(nodeId[0], edge);
+                    double weight = getWeight(nodeId[0], edge);
                     if (weight < minWeight){
                         minWeight = weight;
                         nodeVisited = nodeId;
@@ -127,10 +128,9 @@ public class Dijkstra {
 
         }
 
-        public int getWeight(int nodeId, Edge edge){
+        public double getWeight(int nodeId, Edge edge){
             Node node = visited_nodes.get(nodeId);
-            int weight = (node.getDistanceToSource() + edge.getWeight()) + (this.lambda * edge.getResourceConsumption());
-            return weight;
+            return (node.getDistanceToSource() + edge.getWeight()) + (this.lambda * edge.getResourceConsumption());
         }
 
         public boolean hasBeenVisited(int nodeId){

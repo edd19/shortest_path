@@ -6,7 +6,7 @@ package com.company;
 public class Node {
     private int id;
     private Node predecessor;
-    private int distanceToSource;
+    private double distanceToSource;
     private int capacityUsed;
     private int properDistance;
 
@@ -28,11 +28,11 @@ public class Node {
         return this.predecessor;
     }
 
-    public int getDistanceToSource() {
+    public double getDistanceToSource() {
         return distanceToSource;
     }
 
-    public void setDistanceToSource(int distanceToSource) {
+    public void setDistanceToSource(double distanceToSource) {
         this.distanceToSource = distanceToSource;
     }
 
