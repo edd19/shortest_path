@@ -67,14 +67,15 @@ public class ShortestPathSolver {
         double mu = 1;
         int l = Integer.MIN_VALUE;
         int k = 0;
-        double epsilon = 0.01;
+        double epsilon = 0.001;
         while(mu > epsilon){
             Node sol =  dijkstra.compute(lamdba);
             int l_k = sol.getDistanceToSource() + lamdba * (sol.getCapacityUsed() - this.capacity);
             if (l_k >= l){
                 l = l_k;
                 if (isFeasible(sol)){
-                    this.solution = sol;
+                    if (this.solution == null || this.solution.getProperDistance() > sol.getProperDistance())
+                        this.solution = sol;
                     lamdba--;
                 }
             }
