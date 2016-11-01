@@ -6,12 +6,14 @@ package com.company;
 public class Edge {
     private int nodeId1;
     private int nodeId2;
-    private int distance;
+    private int weight;
+    private int resourceConsumption;
 
-    public Edge(int nodeId1, int nodeId2, int distance) {
+    public Edge(int nodeId1, int nodeId2, int weight, int resourceConsumption) {
         this.nodeId1 = nodeId1;
         this.nodeId2 = nodeId2;
-        this.distance = distance;
+        this.weight = weight;
+        this.resourceConsumption = resourceConsumption;
     }
 
     public int getNodeId1() {
@@ -22,7 +24,11 @@ public class Edge {
         return nodeId2;
     }
 
-    public int getDistance() {
-        return distance;
+    public int getWeight() {
+        return weight;
+    }
+
+    public int getResourceConsumption() {
+        return resourceConsumption;
     }
 }

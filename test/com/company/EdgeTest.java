@@ -13,10 +13,12 @@ public class EdgeTest {
     public void createEdge(){
         int nodeId1 = 1;
         int nodeId2 = 2;
-        int distance = 10;
-        Edge edge = new Edge(nodeId1, nodeId2, distance);
+        int weight = 10;
+        int resourceConsumption = 5;
+        Edge edge = new Edge(nodeId1, nodeId2, weight, resourceConsumption);
         assertEquals("Wrong node id", nodeId1, edge.getNodeId1());
         assertEquals("Wrong node id", nodeId2, edge.getNodeId2());
-        assertEquals("Wrong distance", distance, edge.getDistance());
+        assertEquals("Wrong weight", weight, edge.getWeight());
+        assertEquals("Wrong resource consumption", resourceConsumption, edge.getResourceConsumption());
     }
 }
