@@ -30,7 +30,13 @@ public class Dijkstra {
     }
 
     public Node compute() {
-        Solver solver = new Solver(sourceNodeId, destinationNodeId, edges);
+        Solver solver = new Solver(sourceNodeId, destinationNodeId, edges, 0);
+        solver.compute();
+        return solver.destination;
+    }
+
+    public Node compute(int lamdba) {
+        Solver solver = new Solver(sourceNodeId, destinationNodeId, edges, lamdba);
         solver.compute();
         return solver.destination;
     }
@@ -42,13 +48,15 @@ public class Dijkstra {
         private int destinationNodeId;
         private Node destination;
         private Node source;
+        private int lambda;
 
-        public Solver(int sourceNodeId, int destinationNodeId, Edge[] edges) {
+        public Solver(int sourceNodeId, int destinationNodeId, Edge[] edges, int lamdba) {
             this.edges = edges;
             this.sourceNodeId = sourceNodeId;
             this.destinationNodeId = destinationNodeId;
             this.destination = null;
             this.visited_nodes = new HashMap<>();
+            this.lambda = lamdba;
         }
 
         public void compute(){
@@ -116,7 +124,7 @@ public class Dijkstra {
 
         public int getWeight(int nodeId, Edge edge){
             Node node = visited_nodes.get(nodeId);
-            int weight = node.getDistanceToSource() + edge.getWeight();
+            int weight = (node.getDistanceToSource() + edge.getWeight()) + (this.lambda * edge.getResourceConsumption());
             return weight;
         }
 

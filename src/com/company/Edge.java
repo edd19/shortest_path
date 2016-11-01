@@ -31,4 +31,28 @@ public class Edge {
     public int getResourceConsumption() {
         return resourceConsumption;
     }
+
+    @Override
+    public boolean equals(Object o){
+        if (o == null)
+            return false;
+        if (o.getClass() != Edge.class)
+            return false;
+
+        Edge other = (Edge) o;
+        if (this.weight != other.weight)
+            return false;
+        if (this.resourceConsumption != other.resourceConsumption)
+            return false;
+
+        if(this.nodeId1 == other.nodeId1){
+            if (this.nodeId2 != other.nodeId2)
+                return false;
+        }
+        else if(this.nodeId1 == other.nodeId2){
+            if(this.nodeId2 != other.nodeId1)
+                return false;
+        }
+        return true;
+    }
 }

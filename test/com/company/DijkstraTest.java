@@ -36,10 +36,12 @@ public class DijkstraTest {
         destinationNodeId = 10;
         edges = getEdgesSet2();
         dijkstra = new Dijkstra(sourceNodeId, destinationNodeId, edges);
-        destination = dijkstra.compute();
+        destination = dijkstra.compute(0);
 
         assertEquals("Wrong weight from source to destination", 487, destination.getDistanceToSource());
     }
+
+
 
     public Edge[] getEdgesSet1(){
         Edge edge1 = new Edge(1, 2, 2, 1);
