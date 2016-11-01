@@ -85,6 +85,7 @@ public class Dijkstra {
             Node source = new Node(sourceNodeId);
             source.setDistanceToSource(0);
             source.setCapacityUsed(0);
+            source.setProperDistance(0);
             visited_nodes.put(sourceNodeId, source);
         }
 
