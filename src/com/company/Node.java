@@ -6,10 +6,12 @@ package com.company;
 public class Node {
     private int id;
     private Node predecessor;
+    private int distanceToSource;
 
     public Node(int id){
         this.id = id;
         this.predecessor = null;
+        this.distanceToSource = Integer.MAX_VALUE;
     }
 
     public int getId(){
@@ -22,5 +24,17 @@ public class Node {
 
     public Node getPredecessor(){
         return this.predecessor;
+    }
+
+    public int getDistanceToSource() {
+        return distanceToSource;
+    }
+
+    public void setDistanceToSource(int distanceToSource) {
+        this.distanceToSource = distanceToSource;
+    }
+
+    public String toString(){
+        return "Id: " + id + " - Distance: " + distanceToSource;
     }
 }

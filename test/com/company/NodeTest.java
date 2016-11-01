@@ -19,4 +19,12 @@ public class NodeTest{
         assertEquals("Error when setting predecessor", predecessor, node.getPredecessor());
     }
 
+    @Test
+    public void addDistanceToSource(){
+        Node node = new Node(2);
+        int distance = 5;
+        node.setDistanceToSource(distance);
+        assertEquals("Error when setting distance to source", distance, node.getDistanceToSource());
+    }
+
 }
