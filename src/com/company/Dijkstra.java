@@ -83,12 +83,14 @@ public class Dijkstra {
         public void initialization(){
             Node source = new Node(sourceNodeId);
             source.setDistanceToSource(0);
+            source.setCapacityUsed(0);
             visited_nodes.put(sourceNodeId, source);
         }
 
         public Node findClosestNode(){
             int minWeight = Integer.MAX_VALUE;
             int[] nodeVisited = new int[]{-1,-1};
+            Edge edgeTaken = null;
 
             for(Edge edge : edges){
                 int[] nodeId = direction(edge);
@@ -97,6 +99,7 @@ public class Dijkstra {
                     if (weight < minWeight){
                         minWeight = weight;
                         nodeVisited = nodeId;
+                        edgeTaken = edge;
                     }
                 }
             }
@@ -105,9 +108,11 @@ public class Dijkstra {
                 return null;
 
             Node n = new Node(nodeVisited[1]);
-            n.setPredecessor(visited_nodes.get(nodeVisited[0]));
+            Node predecessor = visited_nodes.get(nodeVisited[0]);
+            n.setPredecessor(predecessor);
             n.setDistanceToSource(minWeight);
-
+            n.setProperDistance(predecessor.getProperDistance() + edgeTaken.getWeight());
+            n.setCapacityUsed(predecessor.getCapacityUsed() + edgeTaken.getResourceConsumption());
             return n;
         }
 

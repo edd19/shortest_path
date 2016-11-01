@@ -7,6 +7,8 @@ public class Node {
     private int id;
     private Node predecessor;
     private int distanceToSource;
+    private int capacityUsed;
+    private int properDistance;
 
     public Node(int id){
         this.id = id;
@@ -36,5 +38,21 @@ public class Node {
 
     public String toString(){
         return "Id: " + id + " - Distance: " + distanceToSource;
+    }
+
+    public int getCapacityUsed() {
+        return capacityUsed;
+    }
+
+    public void setCapacityUsed(int capacityUsed) {
+        this.capacityUsed = capacityUsed;
+    }
+
+    public int getProperDistance() {
+        return properDistance;
+    }
+
+    public void setProperDistance(int properDistance) {
+        this.properDistance = properDistance;
     }
 }

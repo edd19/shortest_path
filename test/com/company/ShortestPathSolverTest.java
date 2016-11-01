@@ -36,6 +36,16 @@ public class ShortestPathSolverTest {
         assertEquals("Capacity is incorrect", capacity, solver.getCapacity());
     }
 
+    @Test
+    public void solve(){
+        String filePath = "./resources/instance1.txt";
+        ShortestPathSolver solver = new ShortestPathSolver(filePath);
+        solver.solve();
+        String solution = solver.getSolution();
+        String expectedSolution = "3\n0 2 1";
+        assertEquals("Wrong solution", expectedSolution, solution);
+    }
+
     public Edge[] getEdgesSet1(){
         Edge edge1 = new Edge(0, 1, 1, 5);
         Edge edge2 = new Edge(0, 2, 2, 1);
@@ -43,5 +53,6 @@ public class ShortestPathSolverTest {
 
         return new Edge[]{edge1, edge2, edge3};
     }
+
 
 }

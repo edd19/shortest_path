@@ -3,7 +3,6 @@ package com.company;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
 
 /**
  * Created by ndizera on 1/11/2016.
@@ -15,6 +14,7 @@ public class ShortestPathSolver {
     private int numberNodes;
     private int numberEdges;
     private Edge[] edges;
+    private Node solution;
 
     public ShortestPathSolver(String filepath){
         try{
@@ -59,6 +59,53 @@ public class ShortestPathSolver {
         int resourceConsumption = Integer.parseInt(edgeInfo[3]);
         Edge edge = new Edge(nodeId1, nodeId2, weight, resourceConsumption);
         return edge;
+    }
+
+    public void solve(){
+        Dijkstra dijkstra = new Dijkstra(sourceNodeId, destinationNodeId, edges);
+        int lamdba = 0;
+        double mu = 1;
+        int l = Integer.MIN_VALUE;
+        int k = 0;
+        double epsilon = 0.01;
+        while(mu > epsilon){
+            Node sol =  dijkstra.compute(lamdba);
+            int l_k = sol.getDistanceToSource() + lamdba * (sol.getCapacityUsed() - this.capacity);
+            if (l_k >= l){
+                l = l_k;
+                if (isFeasible(sol)){
+                    this.solution = sol;
+                    lamdba--;
+                }
+            }
+            if (isFeasible(sol))
+                lamdba--;
+            else
+                lamdba++;
+            mu = 1 / (k+1);
+            k++;
+        }
+
+    }
+
+    public boolean isFeasible(Node sol){
+        return sol.getCapacityUsed() <= this.capacity;
+    }
+
+    public String getSolution(){
+        if (solution == null){
+            return "";
+        }
+        String sol = "";
+        Node predecessor = solution;
+        while(predecessor.getId() != sourceNodeId){
+            sol = predecessor.getId() + " " + sol;
+            predecessor = predecessor.getPredecessor();
+        }
+        sol = predecessor.getId() + " " + sol;
+        sol = sol.trim();
+        sol = solution.getProperDistance() + "\n" + sol;
+        return sol;
     }
 
     public int getSourceNodeId() {
