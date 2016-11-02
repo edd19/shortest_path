@@ -28,8 +28,10 @@ public class BranchBound {
         for (Edge edge: edges){
             Node next = nextNode(actual, edge);
             if (next != null){
-                if(next.getId() == this.destinationNodeId)
+                if(next.getId() == this.destinationNodeId){
                     updateSolution(next);
+                    System.out.println("" + next.getProperDistance() + "    " + next.getCapacityUsed());
+                }
                 else if (passUpperBound(next))
                     compute(next);
             }
@@ -47,6 +49,10 @@ public class BranchBound {
         if(node.getProperDistance() >= this.upperBound)
             return false;
         if(node.getCapacityUsed() > this.capacity)
+            return false;
+        Dijkstra dijkstra = new Dijkstra(node.getId(), this.destinationNodeId, edges);
+        Node sol = dijkstra.compute();
+        if(sol != null && sol.getProperDistance() >= this.upperBound)
             return false;
         return true;
     }

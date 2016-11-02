@@ -91,6 +91,13 @@ public class ShortestPathSolver {
             else if (k % 2 == 0)
                 lastLamdba[0] = lamdba;
         }
+
+        BranchBound branchBound = new BranchBound(sourceNodeId, destinationNodeId, capacity, edges);
+        branchBound.setUpperBound(solution.getProperDistance());
+        branchBound.compute();
+        Node other_sol = branchBound.getSolution();
+        if(other_sol != null)
+            this.solution = other_sol;
     }
 
     public boolean isFeasible(Node sol){
