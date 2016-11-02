@@ -68,8 +68,7 @@ public class ShortestPathSolver {
         double l = Integer.MIN_VALUE;
         int k = 0;
         double step = 1;
-        int limit = 200;
-        while(k < limit){
+        while(step > 0.00000000000000001){
             Node sol =  dijkstra.compute(lamdba);
             double l_k = sol.getDistanceToSource() -  (lamdba  * this.capacity);
             if (l_k >= l){
@@ -80,13 +79,13 @@ public class ShortestPathSolver {
                 }
 
             }
-
+            //System.out.println("" + sol.getProperDistance() + "   " + sol.getDistanceToSource() + "   " + lamdba + "   " + l +  "   " + step);
             if( isFeasible(sol))
                 lamdba -= step;
             else
                 lamdba += step;
             k++;
-            if ((lastLamdba[0] == lamdba || lamdba == lastLamdba[1]) && step > 0.000000000000001)
+            if ((lastLamdba[0] == lamdba || lamdba == lastLamdba[1]))
                 step = step / 10.0;
             if (k % 2 == 1)
                 lastLamdba[1] = lamdba;
