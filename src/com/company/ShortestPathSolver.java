@@ -79,7 +79,6 @@ public class ShortestPathSolver {
                 }
 
             }
-            //System.out.println("" + sol.getProperDistance() + "   " + sol.getDistanceToSource() + "   " + lamdba + "   " + l +  "   " + step);
             if( isFeasible(sol))
                 lamdba -= step;
             else

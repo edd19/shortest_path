@@ -19,7 +19,7 @@ public class ShortestPathSolverTest {
         int source = 0;
         int destination = 1;
         int capacity = 2;
-        Edge[] edges = getEdgesSet1();
+        Edge[] edges = DataForTest.getEdgesSet3();
         assertEquals("Source node id is incorrect", source, solver.getSourceNodeId());
         assertEquals("Destination node id is incorrect", destination, solver.getDestinationNodeId());
         assertEquals("Capacity is incorrect", capacity, solver.getCapacity());
@@ -53,13 +53,6 @@ public class ShortestPathSolverTest {
         assertEquals("Wrong solution", expectedSolution, solution);
     }
 
-    public Edge[] getEdgesSet1(){
-        Edge edge1 = new Edge(0, 1, 1, 5);
-        Edge edge2 = new Edge(0, 2, 2, 1);
-        Edge edge3 = new Edge(2, 1, 1, 1);
-
-        return new Edge[]{edge1, edge2, edge3};
-    }
 
 
 }
