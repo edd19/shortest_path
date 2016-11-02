@@ -3,6 +3,7 @@ package com.company;
 import java.util.ArrayList;
 import java.util.DoubleSummaryStatistics;
 import java.util.HashMap;
+import java.util.IntSummaryStatistics;
 
 /**
  * Created by ndizera on 1/11/2016.
@@ -34,6 +35,12 @@ public class Dijkstra {
         Solver solver = new Solver(sourceNodeId, destinationNodeId, edges, 0);
         solver.compute();
         return solver.destination;
+    }
+
+    public HashMap<Integer, Node> computeComplete(){
+        Solver solver = new Solver(sourceNodeId, destinationNodeId, edges, 0);
+        solver.computeComplete();
+        return solver.getVisited_nodes();
     }
 
     public Node compute(double lamdba) {
@@ -80,6 +87,27 @@ public class Dijkstra {
             }
 
         }
+
+        public void computeComplete(){
+            initialization();
+
+            boolean to_continue = true;
+
+            while (to_continue){
+                Node min = findClosestNode();
+                if (min == null){
+                    to_continue = false;
+                }
+                else if (min.getId() == destinationNodeId){
+                    destination = min;
+                    visited_nodes.put(min.getId(), min);
+                }
+                else{
+                    visited_nodes.put(min.getId(), min);
+                }
+            }
+        }
+
 
         public void initialization(){
             Node source = new Node(sourceNodeId);
@@ -140,6 +168,10 @@ public class Dijkstra {
 
         public boolean hasNotBeenVisited(int nodeId){
             return !hasBeenVisited(nodeId);
+        }
+
+        public HashMap<Integer, Node> getVisited_nodes() {
+            return visited_nodes;
         }
     }
 }

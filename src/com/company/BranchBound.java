@@ -1,5 +1,7 @@
 package com.company;
 
+import java.util.HashMap;
+
 /**
  * Created by ndizera on 2/11/2016.
  */
@@ -10,6 +12,7 @@ public class BranchBound {
     private int capacity;
     private int upperBound;
     private Node solution;
+    private HashMap<Integer, Node> nodes;
 
     public BranchBound(int sourceNodeId, int destinationNodeId, int capacity,  Edge[] edges) {
         this.sourceNodeId = sourceNodeId;
@@ -17,9 +20,12 @@ public class BranchBound {
         this.edges = edges;
         this.capacity = capacity;
         this.upperBound = Integer.MAX_VALUE;
+        Dijkstra dijkstra = new Dijkstra(destinationNodeId, sourceNodeId, edges);
+        this.nodes = dijkstra.computeComplete();
     }
 
     public void compute(){
+        //System.out.println("compute begins");
         Node source = initialization();
         compute(source);
     }
@@ -30,7 +36,7 @@ public class BranchBound {
             if (next != null){
                 if(next.getId() == this.destinationNodeId){
                     updateSolution(next);
-                    System.out.println("" + next.getProperDistance() + "    " + next.getCapacityUsed());
+                    //System.out.println("" + next.getProperDistance() + "    " + next.getCapacityUsed());
                 }
                 else if (passUpperBound(next))
                     compute(next);
@@ -50,9 +56,7 @@ public class BranchBound {
             return false;
         if(node.getCapacityUsed() > this.capacity)
             return false;
-        Dijkstra dijkstra = new Dijkstra(node.getId(), this.destinationNodeId, edges);
-        Node sol = dijkstra.compute();
-        if(sol != null && sol.getProperDistance() >= this.upperBound)
+        if(node.getProperDistance() + nodes.get(node.getId()).getProperDistance() >= this.upperBound)
             return false;
         return true;
     }

@@ -36,7 +36,7 @@ public class BranchBoundTest {
         Edge[] edges = DataForTest.getEdgesSet1();
         int sourceNodeId = 1;
         int destinationNodeId = 4;
-        int capacity = 10;
+        int capacity = 40;
         BranchBound branchBound = new BranchBound(sourceNodeId, destinationNodeId, capacity, edges);
 
         branchBound.compute();
