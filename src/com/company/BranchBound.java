@@ -1,6 +1,7 @@
 package com.company;
 
-import java.util.HashMap;
+import java.util.*;
+import java.util.concurrent.SynchronousQueue;
 
 /**
  * Created by ndizera on 2/11/2016.
@@ -18,6 +19,7 @@ public class BranchBound {
         this.sourceNodeId = sourceNodeId;
         this.destinationNodeId = destinationNodeId;
         this.edges = edges;
+        Arrays.sort(edges);
         this.capacity = capacity;
         this.upperBound = Integer.MAX_VALUE;
         Dijkstra dijkstra = new Dijkstra(destinationNodeId, sourceNodeId, edges);
@@ -25,22 +27,50 @@ public class BranchBound {
     }
 
     public void compute(){
-        //System.out.println("compute begins");
         Node source = initialization();
-        compute(source);
+        long start = System.currentTimeMillis();
+        compute(source, start);
     }
 
-    private void compute(Node actual){
+    private void compute(Node actual, long start){
         for (Edge edge: edges){
             Node next = nextNode(actual, edge);
             if (next != null){
                 if(next.getId() == this.destinationNodeId){
                     updateSolution(next);
-                    //System.out.println("" + next.getProperDistance() + "    " + next.getCapacityUsed());
                 }
                 else if (passUpperBound(next))
-                    compute(next);
+                    compute(next, start);
             }
+            long end = System.currentTimeMillis();
+            if (end - start > 250000){
+                break;
+            }
+        }
+    }
+
+    public void computeHazard(){
+        Node source = initialization();
+        long start = System.currentTimeMillis();
+        HashMap<Integer, Integer> nodesToDiscard = hazard();
+        computeHazard(source, start, nodesToDiscard);
+    }
+
+    public void computeHazard(Node actual, long start, HashMap<Integer, Integer> nodesToDiscard){
+        for (Edge edge: edges){
+            Node next = nextNode(actual, edge);
+            if (next != null && !nodesToDiscard.containsKey(next.getId())){
+                if(next.getId() == this.destinationNodeId){
+                    updateSolution(next);
+                }
+                else if (passUpperBound(next))
+                    computeHazard(next, start, nodesToDiscard);
+            }
+            long end = System.currentTimeMillis();
+            if (end - start > 250000){
+                break;
+            }
+
         }
     }
 
@@ -49,6 +79,22 @@ public class BranchBound {
             solution = node;
             this.upperBound = node.getProperDistance();
         }
+    }
+
+    private HashMap<Integer, Integer> hazard(){
+        int n = 250;
+        HashMap<Integer, Integer> nodesToDiscard = new HashMap<Integer, Integer>(this.nodes.size()-n);
+        Random random = new Random();
+        for(int i = 0; i > this.nodes.size()-n; i++){
+            int randomNodeId = random.nextInt(this.nodes.size());
+            nodesToDiscard.put(randomNodeId, randomNodeId);
+        }
+        if (nodesToDiscard.containsKey(sourceNodeId))
+            nodesToDiscard.remove(nodesToDiscard);
+        if (nodesToDiscard.containsKey(destinationNodeId))
+            nodesToDiscard.remove(destinationNodeId);
+
+        return nodesToDiscard;
     }
 
     public boolean passUpperBound(Node node){

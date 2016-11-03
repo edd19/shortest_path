@@ -3,7 +3,7 @@ package com.company;
 /**
  * Created by ndizera on 1/11/2016.
  */
-public class Edge {
+public class Edge implements Comparable<Edge>{
     private int nodeId1;
     private int nodeId2;
     private int weight;
@@ -54,5 +54,23 @@ public class Edge {
                 return false;
         }
         return true;
+    }
+
+    @Override
+    public int compareTo(Edge o) {
+        if (this.getWeight() > o.getWeight())
+            return 1;
+        else if(this.getWeight() < o.getWeight())
+            return -1;
+        else{
+            if (this.getResourceConsumption() < o.getResourceConsumption())
+                return 1;
+            else if (this.getResourceConsumption() > o.getResourceConsumption())
+                return -1;
+            else{
+                return 0;
+            }
+
+        }
     }
 }
