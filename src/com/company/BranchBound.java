@@ -2,6 +2,7 @@ package com.company;
 
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Random;
 
 /**
  * Created by ndizera on 2/11/2016.
@@ -14,6 +15,7 @@ public class BranchBound {
     private int upperBound;
     private Node solution;
     private HashMap<Integer, Node> nodes;
+    private HashMap<Integer, Node>bestPaths;
 
     public BranchBound(int sourceNodeId, int destinationNodeId, int capacity,  Edge[] edges) {
         this.sourceNodeId = sourceNodeId;
@@ -24,6 +26,7 @@ public class BranchBound {
         this.upperBound = Integer.MAX_VALUE;
         Dijkstra dijkstra = new Dijkstra(destinationNodeId, sourceNodeId, edges);
         this.nodes = dijkstra.computeComplete();
+        this.bestPaths = new HashMap<Integer, Node>(nodes.size());
     }
 
     public void compute(){
@@ -46,6 +49,41 @@ public class BranchBound {
         }
     }
 
+    public void computeHazard(){
+        Node source = initialization();
+        HashMap<Integer, Integer> nodesToDiscard = hazard();
+        computeHazard(source, nodesToDiscard);
+    }
+
+    private HashMap<Integer, Integer> hazard(){
+        int n = 20;
+        HashMap<Integer, Integer> nodesToDiscard = new HashMap<Integer, Integer>(n);
+        Random random = new Random();
+        for(int i = 0; i < n; i++){
+            int randomNodeId = random.nextInt(this.nodes.size()+1);
+            nodesToDiscard.put(randomNodeId, randomNodeId);
+        }
+        if (nodesToDiscard.containsKey(sourceNodeId))
+            nodesToDiscard.remove(sourceNodeId);
+        if (nodesToDiscard.containsKey(destinationNodeId))
+            nodesToDiscard.remove(destinationNodeId);
+        return nodesToDiscard;
+    }
+
+    public void computeHazard(Node actual, HashMap<Integer, Integer> nodesToDiscard){
+        for (Edge edge: edges){
+            Node next = nextNode(actual, edge);
+            if (next != null && !nodesToDiscard.containsKey(next.getId())){
+                if(next.getId() == this.destinationNodeId){
+//                    System.out.println("" + next.getProperDistance() + "   " + next.getCapacityUsed());
+                    updateSolution(next);
+                }
+                else if (passUpperBound(next))
+                    computeHazard(next, nodesToDiscard);
+            }
+        }
+    }
+
     private void updateSolution(Node node){
         if (passUpperBound(node)){
             solution = node;
@@ -60,6 +98,19 @@ public class BranchBound {
             return false;
         if(node.getProperDistance() + nodes.get(node.getId()).getProperDistance() >= this.upperBound)
             return false;
+        if(bestPaths.containsKey(node.getId())){
+            Node best = bestPaths.get(node.getId());
+            if (best.getCapacityUsed() < node.getCapacityUsed() && best.getProperDistance() < node.getProperDistance()){
+                return false;
+            }
+            else if(best.getCapacityUsed() > node.getCapacityUsed() && best.getProperDistance() > node.getProperDistance()){
+                bestPaths.put(node.getId(), node);
+            }
+        }
+        else{
+            bestPaths.put(node.getId(), node);
+        }
+
         return true;
     }
 

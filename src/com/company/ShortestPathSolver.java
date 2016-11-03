@@ -96,6 +96,11 @@ public class ShortestPathSolver {
         BranchBound branchBound = new BranchBound(sourceNodeId, destinationNodeId, capacity, edges);
         branchBound.setUpperBound(solution.getProperDistance());
         branchBound.compute();
+//        for(int i = 0; i < 2; i++){
+//            branchBound = new BranchBound(sourceNodeId, destinationNodeId, capacity, edges);
+//            branchBound.setUpperBound(solution.getProperDistance());
+//            branchBound.computeHazard();
+//        }
         Node other_sol = branchBound.getSolution();
         if(other_sol != null)
             this.solution = other_sol;
