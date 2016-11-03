@@ -1,5 +1,6 @@
 package com.company;
 
+import java.util.Arrays;
 import java.util.HashMap;
 
 /**
@@ -18,6 +19,7 @@ public class BranchBound {
         this.sourceNodeId = sourceNodeId;
         this.destinationNodeId = destinationNodeId;
         this.edges = edges;
+        //Arrays.sort(edges);
         this.capacity = capacity;
         this.upperBound = Integer.MAX_VALUE;
         Dijkstra dijkstra = new Dijkstra(destinationNodeId, sourceNodeId, edges);
